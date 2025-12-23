@@ -1,0 +1,104 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0, v1.1.0 gibi taglar için tetiklenir
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        pip install pyinstaller
+    
+    - name: Install Node dependencies
+      run: |
+        cd frontend
+        npm install
+    
+    - name: Train model
+      run: |
+        cd backend
+        python train.py
+    
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm run build
+    
+    - name: Prepare standalone files
+      run: |
+        # Create standalone directory structure
+        mkdir -p standalone/static
+        
+        # Copy frontend build
+        cp -r frontend/dist/* standalone/static/
+        
+        # Copy scanner
+        cp backend/scanner.py standalone/
+        
+        # Copy model
+        cp backend/syntax_sherlock_model.pkl standalone/
+      shell: bash
+    
+    - name: Build executable
+      run: |
+        cd standalone
+        pyinstaller --name "SyntaxSherlock" --onefile --add-data "static;static" --add-data "scanner.py;." --add-data "syntax_sherlock_model.pkl;." --hidden-import "sklearn.ensemble._forest" --hidden-import "sklearn.tree._classes" --hidden-import "sklearn.neighbors._typedefs" --hidden-import "sklearn.utils._cython_blas" --hidden-import "sklearn.neighbors._quad_tree" --hidden-import "sklearn.tree._utils" --collect-submodules "sklearn" --noconfirm --clean app.py
+    
+    - name: Create release package
+      run: |
+        mkdir release
+        cp standalone/dist/SyntaxSherlock.exe release/
+        cp backend/syntax_sherlock_model.pkl release/
+        cd release
+        7z a -tzip ../SyntaxSherlock-${{ github.ref_name }}-windows.zip *
+      shell: bash
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          SyntaxSherlock-${{ github.ref_name }}-windows.zip
+          standalone/dist/SyntaxSherlock.exe
+        body: |
+          ## 🔍 SyntaxSherlock ${{ github.ref_name }}
+          
+          ### 📥 Download
+          - **SyntaxSherlock-${{ github.ref_name }}-windows.zip** - Complete package (recommended)
+          - **SyntaxSherlock.exe** - Executable only (requires model file)
+          
+          ### 🚀 Quick Start
+          1. Download the `.zip` file
+          2. Extract to a folder
+          3. Run `SyntaxSherlock.exe`
+          4. Browser will open automatically at http://localhost:8000
+          
+          ### ⚠️ Important
+          If you download only the `.exe`, you also need `syntax_sherlock_model.pkl` in the same folder!
+          
+          ### 📋 What's New
+          Check the commit history for detailed changes.
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

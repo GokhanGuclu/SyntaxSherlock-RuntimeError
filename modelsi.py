@@ -91,3 +91,4 @@ print(list(model.feature_names_in_))
 
 joblib.dump(model, MODEL_PATH)
 print(f"\n✅ Model kaydedildi: {MODEL_PATH}")
+asdasda

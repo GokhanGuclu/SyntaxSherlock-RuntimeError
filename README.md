@@ -1,4 +1,4 @@
-# 🔍 SyntaxSherlock
+# 🔍 SyntaxSherlock - Runtime Error
 
 **Machine Learning-based Runtime Error Prediction System for Python Code**
 
@@ -222,6 +222,11 @@ SyntaxSherlock/
 │   ├── package.json
 │   └── vite.config.ts
 │
+├── standalone/
+│   ├── app.py              # Standalone application
+│   ├── build.py            # Build script for exe
+│   └── README.md           # Build instructions
+│
 ├── screenshots/            # UI screenshots
 ├── test/                   # Test files
 ├── .gitignore
@@ -269,6 +274,36 @@ Example metrics after model training:
     </td>
   </tr>
 </table>
+
+## 📥 Download
+
+Get the latest release from [GitHub Releases](../../releases/latest):
+
+| File | Description |
+|------|-------------|
+| `SyntaxSherlock-vX.X.X-windows.zip` | Complete package (recommended) |
+| `SyntaxSherlock.exe` | Executable only |
+
+### Quick Start
+1. Download the `.zip` file from Releases
+2. Extract to a folder
+3. Run `SyntaxSherlock.exe`
+4. Browser opens automatically at http://localhost:8000
+
+## 📦 Build from Source
+
+You can also build the executable yourself:
+
+```bash
+cd standalone
+python build.py
+```
+
+This will create `standalone/dist/SyntaxSherlock.exe`. 
+
+**Important:** Copy `syntax_sherlock_model.pkl` to the same folder as the exe!
+
+See [standalone/README.md](standalone/README.md) for details.
 
 ## 🤝 Contributing
 

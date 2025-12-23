@@ -86,3 +86,14 @@ coverage.xml
 *.docx
 *.xlsx
 
+# Standalone build artifacts
+standalone/static/
+standalone/dist/
+standalone/build/
+standalone/*.spec
+standalone/scanner.py
+standalone/syntax_sherlock_model.pkl
+
+# Project specific exclusions
+modelsi.py
+CHANGELOG.md
