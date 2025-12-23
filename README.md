@@ -10,21 +10,28 @@ SyntaxSherlock is a web application that detects potential runtime errors (ZeroD
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-orange?logo=scikitlearn)
 
+## 🎬 Demo
+
+![Demo](screenshots/demo.gif)
+
+> 📌 *Add your demo GIF to `screenshots/demo.gif`*
+
 ## 📸 Screenshots
 
-### Home Page
-![Home Page](screenshots/home.png)
-
-### File Upload
-![File Upload](screenshots/upload.png)
-
-### Analysis Results
-![Analysis Results](screenshots/results.png)
-
-### Error Detection
-![Error Detection](screenshots/error-detection.png)
-
-> 📌 *Add your screenshots to the `screenshots/` folder*
+<table>
+  <tr>
+    <td align="center">
+      <img src="screenshots/upload.png" alt="Upload" width="450"/>
+      <br />
+      <b>File Upload</b>
+    </td>
+    <td align="center">
+      <img src="screenshots/results.png" alt="Results" width="450"/>
+      <br />
+      <b>Analysis Results</b>
+    </td>
+  </tr>
+</table>
 
 ## 📋 Table of Contents
 
@@ -59,34 +66,6 @@ SyntaxSherlock is a web application that detects potential runtime errors (ZeroD
                                        └─────────────────┘
 ```
 
-## 🖼️ UI Preview
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="screenshots/home.png" alt="Home" width="400"/>
-      <br />
-      <b>Home Page</b>
-    </td>
-    <td align="center">
-      <img src="screenshots/upload.png" alt="Upload" width="400"/>
-      <br />
-      <b>File Upload</b>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="screenshots/results.png" alt="Results" width="400"/>
-      <br />
-      <b>Analysis Results</b>
-    </td>
-    <td align="center">
-      <img src="screenshots/error-detection.png" alt="Errors" width="400"/>
-      <br />
-      <b>Error Detection</b>
-    </td>
-  </tr>
-</table>
 
 ## 🚀 Installation
 
