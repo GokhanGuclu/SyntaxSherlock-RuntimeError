@@ -14,8 +14,6 @@ SyntaxSherlock is a web application that detects potential runtime errors (ZeroD
 
 ![Demo](screenshots/demo.gif)
 
-> 📌 *Add your demo GIF to `screenshots/demo.gif`*
-
 ## 📸 Screenshots
 
 <table>
