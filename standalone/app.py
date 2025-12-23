@@ -19,14 +19,13 @@ import time
 
 # PyInstaller için base path
 if getattr(sys, 'frozen', False):
+    # Exe içindeki dosyalar için
     BASE_DIR = sys._MEIPASS
-    DATA_DIR = os.path.dirname(sys.executable)
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    DATA_DIR = BASE_DIR
 
-# Model ve static dosya yolları
-MODEL_PATH = os.path.join(DATA_DIR, "syntax_sherlock_model.pkl")
+# Model ve static dosya yolları (hepsi exe içinde gömülü)
+MODEL_PATH = os.path.join(BASE_DIR, "syntax_sherlock_model.pkl")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 # Scanner modülünü import et
@@ -43,7 +42,7 @@ async def lifespan(app: FastAPI):
         print("✅ Model loaded successfully.")
     except FileNotFoundError:
         print(f"❌ Model not found at: {MODEL_PATH}")
-        print("   Please ensure 'syntax_sherlock_model.pkl' is in the same folder as the exe.")
+        print("   Model should be embedded in the exe. Please rebuild.")
     except Exception as e:
         print(f"❌ Model loading error: {e}")
     yield
@@ -148,10 +147,8 @@ def open_browser():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("🔍 SyntaxSherlock Starting...")
+    print("🔍 SyntaxSherlock v" + VERSION)
     print("=" * 50)
-    print(f"📁 Base Directory: {BASE_DIR}")
-    print(f"📁 Data Directory: {DATA_DIR}")
     print(f"🌐 Opening http://localhost:8000")
     print("=" * 50)
     print("Press Ctrl+C to stop the server")

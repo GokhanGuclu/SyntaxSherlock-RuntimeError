@@ -53,8 +53,20 @@ def main():
     )
     print("✅ Frontend copied to static/")
     
-    # 4. PyInstaller ile exe oluştur
-    print("\n📋 Step 4: Creating executable with PyInstaller...")
+    # 4. Model dosyasını kopyala
+    print("\n📋 Step 4: Copying model file...")
+    model_src = os.path.join(BACKEND_DIR, "syntax_sherlock_model.pkl")
+    model_dst = os.path.join(STANDALONE_DIR, "syntax_sherlock_model.pkl")
+    
+    if os.path.exists(model_src):
+        shutil.copy(model_src, model_dst)
+        print("✅ Model file copied")
+    else:
+        print("⚠️  Model file not found! Run 'python backend/train.py' first.")
+        print("   Continuing without model...")
+    
+    # 5. PyInstaller ile exe oluştur
+    print("\n📋 Step 5: Creating executable with PyInstaller...")
     
     # PyInstaller yüklü mü kontrol et
     try:
@@ -63,7 +75,7 @@ def main():
         print("📦 Installing PyInstaller...")
         run_command("pip install pyinstaller")
     
-    # PyInstaller komutunu çalıştır
+    # PyInstaller komutunu çalıştır - Model exe içine gömülü!
     pyinstaller_cmd = (
         f'pyinstaller '
         f'--name "SyntaxSherlock" '
@@ -71,6 +83,7 @@ def main():
         f'--icon "{os.path.join(STANDALONE_DIR, "icon.ico")}" '
         f'--add-data "static;static" '
         f'--add-data "scanner.py;." '
+        f'--add-data "syntax_sherlock_model.pkl;." '
         f'--hidden-import "sklearn.ensemble._forest" '
         f'--hidden-import "sklearn.tree._classes" '
         f'--hidden-import "sklearn.neighbors._typedefs" '
@@ -91,12 +104,16 @@ def main():
     
     run_command(pyinstaller_cmd, cwd=STANDALONE_DIR)
     
+    dist_dir = os.path.join(STANDALONE_DIR, "dist")
+    exe_path = os.path.join(dist_dir, "SyntaxSherlock.exe")
+    exe_size = os.path.getsize(exe_path) / (1024 * 1024)  # MB
+    
     print("\n" + "=" * 60)
     print("✅ BUILD COMPLETE!")
     print("=" * 60)
-    print(f"\n📁 Executable location: {os.path.join(STANDALONE_DIR, 'dist', 'SyntaxSherlock.exe')}")
-    print("\n⚠️  IMPORTANT: Copy 'syntax_sherlock_model.pkl' to the same folder as the .exe!")
-    print("   You can generate it by running: python backend/train.py")
+    print(f"\n📁 Executable: {exe_path}")
+    print(f"📦 Size: {exe_size:.1f} MB (model embedded)")
+    print("\n🚀 Just run SyntaxSherlock.exe - no extra files needed!")
     print("=" * 60)
 
 if __name__ == "__main__":
