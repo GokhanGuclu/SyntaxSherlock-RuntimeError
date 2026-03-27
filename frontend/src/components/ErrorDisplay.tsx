@@ -6,6 +6,9 @@ interface ErrorDisplayProps {
     errors: RuntimeError[];
     code: string;
     filename: string;
+
+
+    
 }
 
 const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ errors, code, filename }) => {
